@@ -6,12 +6,16 @@ use IO::Socket;
 use JSON qw( decode_json encode_json );
 use Data::Dumper;
 
-# Simple http server in Perl
+# Simple web server in Perl
+# Serves out .html files, echos form data
+
 
 # Setup and create socket
 
 my $port = shift;
-defined($port) or die "Usage: $0 portno\n";
+if(!defined($port)) { 
+    $port = 80; 
+}
 
 my $DOCUMENT_ROOT = $ENV{'HOME'} . "/public_html";
 my $server = new IO::Socket::INET(Proto => 'tcp',
@@ -133,6 +137,8 @@ while (my $client = $server->accept()) {
 			 my $json_str = "\{";
 			 foreach(@ad_files) {
 				 if(open(FILE,"<$_")) {
+					#my $id = $_;
+					#$json_str = "$json_str\n\t\"$id\n\t\"\:\t\t";
 					$json_str = "";
 					my $buffer;
 					read(FILE, $buffer, 4096);
@@ -148,6 +154,7 @@ while (my $client = $server->accept()) {
 										   'duration' => $dur,
 										   'created' => $create_time);
 							$json_str = encode_json \%ad_hash;
+							#$json_str = "$json_str\"ad_content\"\: \"$ad\"\,\n\t\t\"duration\"\:\"$dur\"\n\t\t\"create_time\"\:\"$create_time\n\t\}\"";
 						}					
 						print $client $json_str;
 					 }					 					 
