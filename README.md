@@ -7,4 +7,4 @@ user@host-machine:~/ perl ./ad-server.pl <port>
 The directory where it is installed is the server's document root. The server responds to GET and POST requests from simple clients like telnet or the Mozilla Firefox Poster tool. 
 
 The server can be reached by calling:
-"http://<host>:<port>/PARTNER_ID" (GET request) or "http://<host>:<port>/" (POST request with a json object).
+"http://\<host>:<port\>/PARTNER_ID" (GET request) or "http://\<host\>:\<port\>/" (POST request with a json object).
