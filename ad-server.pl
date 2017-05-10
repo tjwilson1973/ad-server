@@ -6,9 +6,7 @@ use IO::Socket;
 use JSON qw( decode_json encode_json );
 use Data::Dumper;
 
-# Simple web server in Perl
-# Serves out .html files, echos form data
-
+# Simple http server in Perl
 
 # Setup and create socket
 
