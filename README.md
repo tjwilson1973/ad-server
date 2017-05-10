@@ -8,3 +8,5 @@ The directory where it is installed is the server's document root. The server re
 
 The server can be reached by calling:
 "http://\<host>:<port\>/PARTNER_ID" (GET request) or "http://\<host\>:\<port\>/" (POST request with a json object).
+
+If the port is not given, it is defaulted to 80.
