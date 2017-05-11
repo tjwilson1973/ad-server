@@ -105,22 +105,23 @@ while (my $client = $server->accept()) {
 		close(FILE);
 		$data{"_status"} = "200";
 	} else {
-		if($request{URL} =~ /^\/\w+\/S+\/w+$/) {
+		if($request{URL} =~ /^\/\w+/) {
 			if(open(FILE,"<$localfile\.txt")) {
-				print $client "HTTP/1.0 200 OK", Socket::CRLF;
-				print $client "Content-type: text/html", Socket::CRLF;
-				print $client Socket::CRLF;
 				my $buffer;
-				read(FILE, $buffer, 99999999);
-				if($buffer =~ /^\w+\n(.*)\n(\d+)\n(\d+)\n$/) {
-					my $ad = $1;
-					my $dur = $2;
-					my $create_time = $3;
-					my $current_time = time();
-					if(($current_time - $create_time) <= $dur) {
-						print $client $1;
-					} else {
-						print $client "Ad has expired!", Socket::CRLF;
+				read(FILE, $buffer, 16384);
+				my @ads = split /\[EOA\]\n/, $buffer;
+				foreach(@ads) {
+					my $filename = $_;
+					if($filename =~ /^\w+\n(.*)\n(\d+)\n(\d+)\n$/) {
+						my $ad = $1;
+						my $dur = $2;
+						my $create_time = $3;
+						my $current_time = time();
+						if(($current_time - $create_time) <= $dur) {
+							print $client $1;
+						} else {
+							print $client "Ad has expired!", Socket::CRLF;
+						}
 					}
 				}
 				$data{"_status"} = "200";
